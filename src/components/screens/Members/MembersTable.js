@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { DataGrid, GridColDef, GridApi, GridCellValue } from '@mui/x-data-grid';
+import { DataGrid } from '@mui/x-data-grid';
 import IconButton from '@mui/material/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
-import { useMembers } from '../../contexts/members/provider';
+import { useMembers } from '../../../contexts/members/provider';
 
 const columns = [
   { field: 'id', headerName: 'ID', width: 100 },
@@ -30,7 +30,7 @@ const columns = [
   },
 ];
 
-export default function GuestTables({ members }) {
+export default function MembersTable({ members }) {
   if (!members) return;
 
   return (
