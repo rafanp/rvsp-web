@@ -6,28 +6,39 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { CacheProvider } from '@emotion/react';
 import theme from '../src/theme';
 import createEmotionCache from '../src/createEmotionCache';
-import { MembersProvider } from '../src/contexts/members/provider';
+import Main from '@/components/layouts/Main';
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
 
-export default function MyApp(props) {
+const GetProviders = ({ children, emotionCache }) => {
+  return (
+    <>
+      <CacheProvider value={emotionCache}>
+        <Head>
+          <meta name="viewport" content="initial-scale=1, width=device-width" />
+        </Head>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          {children}
+        </ThemeProvider>
+      </CacheProvider>
+    </>
+  );
+};
+
+const MyApp = (props) => {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
 
+  const getLayout = Component.getLayout || ((page) => <Main>{page}</Main>);
   return (
-    // <MembersProvider>
-    <CacheProvider value={emotionCache}>
-      <Head>
-        <meta name="viewport" content="initial-scale=1, width=device-width" />
-      </Head>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <Component {...pageProps} />
-      </ThemeProvider>
-    </CacheProvider>
-    //{/* </MembersProvider> */}
+    <GetProviders emotionCache={emotionCache}>
+      {getLayout(<Component {...pageProps} />)}
+    </GetProviders>
   );
-}
+};
+
+export default MyApp;
 
 MyApp.propTypes = {
   Component: PropTypes.elementType.isRequired,
