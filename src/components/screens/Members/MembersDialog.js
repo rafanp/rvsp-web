@@ -19,7 +19,7 @@ export default function MembersDialog() {
   const {
     openMemberDialog,
     setOpenMemberDialog,
-    member,
+    memberData,
     clearMember,
     changeMember,
     saveMember,
@@ -52,7 +52,9 @@ export default function MembersDialog() {
         maxWidth="sm"
         fullWidth
       >
-        <DialogTitle>Member</DialogTitle>
+        <DialogTitle>
+          {memberData.id ? 'Edit Member' : 'Create new Member'}
+        </DialogTitle>
         <DialogContent>
           <DialogContentText>
             Create a new member or edit a existing member.
@@ -64,7 +66,7 @@ export default function MembersDialog() {
             name="name"
             label="Name"
             onChange={handleTextfield}
-            value={member.name}
+            value={memberData.name}
             fullWidth
             variant="standard"
           />
@@ -79,7 +81,7 @@ export default function MembersDialog() {
           <FormControlLabel
             control={
               <Checkbox
-                checked={member.child}
+                checked={memberData.child}
                 onChange={handleCheckbox}
                 name="child"
                 id="child"
@@ -90,7 +92,7 @@ export default function MembersDialog() {
           <FormControlLabel
             control={
               <Checkbox
-                checked={member.attending}
+                checked={memberData.attending}
                 onChange={handleCheckbox}
                 name="attending"
               />
@@ -100,7 +102,9 @@ export default function MembersDialog() {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={saveMember}>Create</Button>
+          <Button onClick={saveMember}>
+            {memberData.id ? 'Update' : 'Create'}
+          </Button>
         </DialogActions>
       </Dialog>
     </div>

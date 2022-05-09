@@ -1,5 +1,10 @@
 // import { createNewMember } from '@/services/Members';
-import { createNewMember } from '@/services/Members';
+import {
+  createNewMember,
+  listAllMembers,
+  updateMember,
+  deleteMember as deleteMemberApi,
+} from '@/services/Members';
 import {
   useReducer,
   useContext,
@@ -19,42 +24,60 @@ const defaultMember = {
 
 export function MembersProvider({ children }) {
   const [openMemberDialog, setOpenMemberDialog] = useState(false);
-  const [member, setMember] = useState(defaultMember);
+  const [memberData, setMemberData] = useState(defaultMember);
 
   const editMember = async (memberData) => {
     setOpenMemberDialog(true);
-    setMember(memberData);
+    setMemberData(memberData);
   };
 
-  const clearMember = async () => {
-    setMember(defaultMember);
+  const clearMemberData = async () => {
+    setMemberData(defaultMember);
   };
 
   const changeMember = async (field, data) => {
-    // setMember(oldState => {
+    // setMemberData(oldState => {
     //   ...oldState,
     //   [field]: data,
     // });
 
-    setMember((prevState) => ({
+    setMemberData((prevState) => ({
       ...prevState,
       [field]: data,
     }));
   };
 
   const saveMember = async () => {
-    console.log('member :', member);
-    // await createNewMember(member);
+    console.log('memberData :', memberData);
+    // await createNewMember(memberData);
     try {
-      await createNewMember(member);
+      if (memberData.id) {
+        await updateMember(memberData);
+      } else {
+        await createNewMember(memberData);
+      }
       setOpenMemberDialog(false);
-      clearMember();
+      clearMemberData();
+      refreshData();
       console.log('Um');
     } catch (err) {
-      alert(err.response.data.message);
-      console.log('ERRO SAVE>> ', err.response.data.message);
+      alert(err.message);
+      console.log('ERRO SAVE>> ', err.message);
       console.log('Dois');
     }
+  };
+
+  const deleteMember = async (member) => {
+    try {
+      await deleteMemberApi(member.id);
+      refreshData();
+    } catch (err) {
+      alert(err.message);
+    }
+  };
+
+  const refreshData = async () => {
+    await listAllMembers();
   };
 
   return (
@@ -63,10 +86,11 @@ export function MembersProvider({ children }) {
         editMember,
         setOpenMemberDialog,
         openMemberDialog,
-        member,
-        clearMember,
+        memberData,
+        clearMemberData,
         changeMember,
         saveMember,
+        deleteMember,
         // refreshData,
       }}
     >
