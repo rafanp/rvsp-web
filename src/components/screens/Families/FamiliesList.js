@@ -7,7 +7,6 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import FamiliesTable from './FamiliesTable';
 
 const FamiliesList = ({ families }) => {
-  console.log('families :', families);
   if (!families) return;
   return (
     <>
@@ -21,7 +20,7 @@ const FamiliesList = ({ families }) => {
             <Typography>{family.name}</Typography>
           </AccordionSummary>
           <AccordionDetails>
-            <FamiliesTable />
+            <FamiliesTable members={family.members} />
           </AccordionDetails>
         </Accordion>
       ))}

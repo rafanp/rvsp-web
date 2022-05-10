@@ -14,10 +14,7 @@ export const createNewMember = async (member) => {
 
 export const updateMember = async (member) => {
   try {
-    const res = await api.patch(`/members/${member.id}`, {
-      ...member,
-      qwe: 'qweqwe',
-    });
+    const res = await api.patch(`/members/${member.id}`, member);
     return res;
   } catch (err) {
     throw new Error(err.response.data.message);

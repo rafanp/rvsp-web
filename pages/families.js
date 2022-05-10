@@ -2,17 +2,11 @@ import * as React from 'react';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import MembersTable from '../src/components/screens/Members/MembersTable';
-import axios from 'axios';
-import { Button } from '@mui/material';
-import MembersDialog from '../src/components/screens/Members/MembersDialog';
-import { MembersProvider, useMembers } from '../src/contexts/members/provider';
+import { MembersProvider } from '../src/contexts/members/provider';
 import FamiliesList from '@/components/screens/Families/FamiliesList';
+import { listAllFamiliesWithMembers } from '@/services/Families';
 
 const Families = ({ families, members }) => {
-  console.log('members :', members);
-  console.log('families :', families);
-
   return (
     <MembersProvider>
       <Container maxWidth="md">
@@ -21,8 +15,6 @@ const Families = ({ families, members }) => {
             Families
           </Typography>
           <FamiliesList families={families} />
-          {/* <MembersDialog open={true} /> */}
-          {/* <MembersTable members={members} /> */}
         </Box>
       </Container>
     </MembersProvider>
@@ -30,13 +22,16 @@ const Families = ({ families, members }) => {
 };
 
 export async function getServerSideProps() {
-  // Fetch data from external API
-  const familiesResponse = await axios.get('http://localhost:3333/families');
-  //   const membersResponse = await axios.get('http://localhost:3333/members');
-
-  return {
-    props: { families: familiesResponse.data },
-  };
+  try {
+    const familiesResponse = await listAllFamiliesWithMembers();
+    return {
+      props: { families: familiesResponse?.data || [] },
+    };
+  } catch (err) {
+    return {
+      props: {},
+    };
+  }
 }
 
 export default Families;
