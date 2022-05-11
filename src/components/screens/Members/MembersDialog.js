@@ -20,7 +20,7 @@ export default function MembersDialog() {
     openMemberDialog,
     setOpenMemberDialog,
     memberData,
-    clearMember,
+    clearMemberData,
     changeMember,
     saveMember,
   } = useMembers();
@@ -31,11 +31,10 @@ export default function MembersDialog() {
 
   const handleClose = () => {
     setOpenMemberDialog(false);
-    clearMember();
+    clearMemberData();
   };
 
   const handleCheckbox = (event) => {
-    console.log('event :', event);
     changeMember(event.target.name, event.target.checked);
   };
 

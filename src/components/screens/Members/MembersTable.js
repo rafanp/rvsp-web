@@ -25,10 +25,7 @@ const columns = [
 
       return (
         <ButtonGroup>
-          <IconButton
-            aria-label="delete"
-            onClick={() => editMember(params.row)}
-          >
+          <IconButton aria-label="edit" onClick={() => editMember(params.row)}>
             <EditIcon />
           </IconButton>
           <IconButton
