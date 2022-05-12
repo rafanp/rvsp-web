@@ -7,6 +7,8 @@ import { CacheProvider } from '@emotion/react';
 import theme from '../src/theme';
 import createEmotionCache from '../src/createEmotionCache';
 import Main from '@/components/layouts/Main';
+import { SWRConfig } from 'swr';
+import api from '@/services/api';
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -15,13 +17,23 @@ const GetProviders = ({ children, emotionCache }) => {
   return (
     <>
       <CacheProvider value={emotionCache}>
-        <Head>
-          <meta name="viewport" content="initial-scale=1, width=device-width" />
-        </Head>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          {children}
-        </ThemeProvider>
+        <SWRConfig
+          value={{
+            // refreshInterval: 3000,
+            fetcher: (url) => api.get(url).then((res) => res.data),
+          }}
+        >
+          <Head>
+            <meta
+              name="viewport"
+              content="initial-scale=1, width=device-width"
+            />
+          </Head>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            {children}
+          </ThemeProvider>
+        </SWRConfig>
       </CacheProvider>
     </>
   );

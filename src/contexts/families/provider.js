@@ -7,6 +7,7 @@ import {
   useCallback,
 } from 'react';
 import { createFamilyWithMembers } from '@/services/Families';
+import { mutate } from 'swr';
 
 const FamiliesContext = createContext();
 
@@ -73,7 +74,7 @@ export function FamiliesProvider({ children }) {
       }
       setOpenFamilyDialog(false);
       clearFamilyData();
-      // refreshData();
+      refreshData();
     } catch (err) {
       alert(err.message);
     }
@@ -88,9 +89,9 @@ export function FamiliesProvider({ children }) {
   //   }
   // };
 
-  // const refreshData = async () => {
-  //   await listAllFamilys();
-  // };
+  const refreshData = async () => {
+    mutate('/families/with/members');
+  };
 
   return (
     <FamiliesContext.Provider

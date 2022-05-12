@@ -12,7 +12,20 @@ export const listAllFamilies = async () => {
 export const listAllFamiliesWithMembers = async () => {
   const res = await api.get('/families/with/members');
   return res;
+  // const { data, error } = useSWR('/families/with/members');
+  // console.log('data :', data);
+  // return { data, error };
 };
+
+// export function useListAllFamiliesWithMembers() {
+//   const { data, error } = useSWR(`/families/with/members`);
+
+//   return {
+//     user: data,
+//     isLoading: !error && !data,
+//     isError: error,
+//   };
+// }
 
 export const createFamilyWithMembers = async (data) => {
   try {

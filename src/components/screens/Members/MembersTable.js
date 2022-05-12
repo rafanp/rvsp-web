@@ -5,6 +5,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useMembers } from '@/contexts/members/provider';
 import ButtonGroup from '@mui/material/ButtonGroup';
+import swr from '@/services/swr';
 
 const columns = [
   { field: 'id', headerName: 'ID', width: 100 },
@@ -40,8 +41,13 @@ const columns = [
   },
 ];
 
-export default function MembersTable({ members }) {
-  if (!members) return;
+// const fetcher = (...args) => fetch(...args).then((res) => res.json());
+
+export default function MembersTable() {
+  const { data: members, isLoading, isError } = swr('/members');
+
+  if (isLoading) return;
+  if (isError) return;
 
   return (
     <div style={{ height: 400, width: '100%' }}>

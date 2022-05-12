@@ -5,6 +5,7 @@ import {
   updateMember,
   deleteMember as deleteMemberApi,
 } from '@/services/Members';
+import swr from '@/services/swr';
 import {
   useReducer,
   useContext,
@@ -13,6 +14,7 @@ import {
   useEffect,
   useCallback,
 } from 'react';
+import { mutate, useSWRConfig } from 'swr';
 
 const MembersContext = createContext();
 
@@ -48,7 +50,7 @@ export function MembersProvider({ children }) {
   };
 
   const saveMember = async () => {
-    console.log('memberData :', memberData);
+    // console.log('memberData :', memberData);
     // await createNewMember(memberData);
     try {
       if (memberData.id) {
@@ -59,11 +61,10 @@ export function MembersProvider({ children }) {
       setOpenMemberDialog(false);
       clearMemberData();
       refreshData();
-      console.log('Um');
     } catch (err) {
       alert(err.message);
-      console.log('ERRO SAVE>> ', err.message);
-      console.log('Dois');
+      // console.log('ERRO SAVE>> ', err.message);
+      // console.log('Dois');
     }
   };
 
@@ -77,7 +78,9 @@ export function MembersProvider({ children }) {
   };
 
   const refreshData = async () => {
-    await listAllMembers();
+    // await listAllMembers();
+    mutate('/members');
+    // mutate();
   };
 
   return (

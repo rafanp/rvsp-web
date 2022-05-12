@@ -5,12 +5,17 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import FamiliesTable from './FamiliesTable';
+import swr from '@/services/swr';
 
-const FamiliesList = ({ families }) => {
-  if (!families) return;
+const FamiliesList = () => {
+  const { data: families, isLoading, isError } = swr('/families/with/members');
+
+  if (isLoading) return;
+  if (isError) return;
+
   return (
     <>
-      {families.map((family) => (
+      {families?.map((family) => (
         <Accordion key={`accordion-${family.id}`}>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}

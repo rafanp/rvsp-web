@@ -16,24 +16,24 @@ const Families = ({ families, members }) => {
             Families
           </Typography>
           <FamiliesDialog />
-          <FamiliesList families={families} />
+          <FamiliesList />
         </Box>
       </Container>
     </FamiliesProvider>
   );
 };
 
-export async function getServerSideProps() {
-  try {
-    const familiesResponse = await listAllFamiliesWithMembers();
-    return {
-      props: { families: familiesResponse?.data || [] },
-    };
-  } catch (err) {
-    return {
-      props: {},
-    };
-  }
-}
+// export async function getServerSideProps() {
+//   try {
+//     const familiesResponse = await listAllFamiliesWithMembers();
+//     return {
+//       props: { families: familiesResponse?.data || [] },
+//     };
+//   } catch (err) {
+//     return {
+//       props: {},
+//     };
+//   }
+// }
 
 export default Families;
