@@ -14,7 +14,7 @@ import {
   useEffect,
   useCallback,
 } from 'react';
-import { mutate, useSWRConfig } from 'swr';
+import { useMatchMutate } from 'src/hooks/useMatchMutate';
 
 const MembersContext = createContext();
 
@@ -27,6 +27,8 @@ const defaultMember = {
 export function MembersProvider({ children }) {
   const [openMemberDialog, setOpenMemberDialog] = useState(false);
   const [memberData, setMemberData] = useState(defaultMember);
+
+  const matchMutate = useMatchMutate();
 
   const editMember = async (memberData) => {
     setOpenMemberDialog(true);
@@ -78,9 +80,7 @@ export function MembersProvider({ children }) {
   };
 
   const refreshData = async () => {
-    // await listAllMembers();
-    mutate('/members');
-    // mutate();
+    matchMutate(/members/);
   };
 
   return (
@@ -94,7 +94,7 @@ export function MembersProvider({ children }) {
         changeMember,
         saveMember,
         deleteMember,
-        // refreshData,
+        refreshData,
       }}
     >
       {children}

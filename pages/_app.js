@@ -19,8 +19,9 @@ const GetProviders = ({ children, emotionCache }) => {
       <CacheProvider value={emotionCache}>
         <SWRConfig
           value={{
-            // refreshInterval: 3000,
-            fetcher: (url) => api.get(url).then((res) => res.data),
+            // refreshInterval: 2000,
+            fetcher: ({ url, params }) =>
+              api.get(url, { params: { ...params } }).then((res) => res.data),
           }}
         >
           <Head>
