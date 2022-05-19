@@ -16,7 +16,9 @@ const Families = ({ families, members }) => {
             Families
           </Typography>
           <FamiliesDialog />
-          <FamiliesList />
+          <Box sx={{ height: '300px', overflow: 'auto' }}>
+            <FamiliesList />
+          </Box>
         </Box>
       </Container>
     </FamiliesProvider>

@@ -11,11 +11,17 @@ export default function Index() {
     <Container maxWidth="sm">
       <Box sx={{ my: 4 }}>
         <Typography variant="h4" component="h1" gutterBottom>
-          Next.js example
+          RSVP Example
         </Typography>
-        <Link href="/about" color="secondary">
-          Go to the about page
-        </Link>
+        <Typography variant="p" component="p" gutterBottom>
+          Répondez S'il Vous Plaît
+        </Typography>
+        <Typography variant="p" component="p" gutterBottom>
+          Example with useSwr, context-api and Material-UI
+        </Typography>
+        {/* <Link href="/about" color="secondary">
+          Répondez S'il Vous Plaît,
+        </Link> */}
         <ProTip />
         <Copyright />
       </Box>
