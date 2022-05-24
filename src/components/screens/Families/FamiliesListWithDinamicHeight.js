@@ -7,14 +7,10 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import FamiliesTable from './FamiliesTable';
 import { VariableSizeList as List } from 'react-window';
 import useSWRInfinite from 'swr/infinite';
-import InfiniteLoader from 'react-window-infinite-loader';
-import useOnScreen from 'src/hooks/useOnScreen';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { Box } from '@mui/material';
 
 const getKey = (pageIndex, previousPageData) => {
-  // console.log('pageIndex :', pageIndex);
-  // console.log('previousPageData :', previousPageData);
   if (
     previousPageData &&
     previousPageData.currentPage > previousPageData.lastPage
@@ -77,6 +73,7 @@ const FamiliesListWithDinamicHeight = () => {
         Precisa atrelar uma função com ref, e alterar a altura do state
         rowSizes, que contém a altura de todos os componentes
       </p>
+      <p>É apenas a virtualização, não possui paginação no scroll</p>
       <Box
         sx={{
           height: '300px',
@@ -88,12 +85,9 @@ const FamiliesListWithDinamicHeight = () => {
               className="List"
               height={height}
               itemCount={dataFamily.length}
-              //   itemSize={35}
-              //   estimatedItemSize={50}
               width={width}
               itemSize={getItemSize}
               itemData={dataFamily}
-              //   resetAfterIndex={newRowHeights}
               ref={listRef}
             >
               {(props) => <Acordeao {...props} toggleSize={toggleSize} />}
@@ -111,12 +105,6 @@ const FamiliesListWithDinamicHeight = () => {
 };
 
 export default FamiliesListWithDinamicHeight;
-
-const Row = ({ index, style, data }) => {
-  const family = data[index];
-  if (!family) return <div style={style}>Loading</div>;
-  return <div style={style}>{family.name}</div>;
-};
 
 const Acordeao = ({ index, style, data, toggleSize }) => {
   const family = data[index];

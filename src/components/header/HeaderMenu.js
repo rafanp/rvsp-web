@@ -10,6 +10,7 @@ const HeaderMenu = () => {
       <Stack direction="row" spacing={3} justifyContent="center">
         <Link href={'/families'}>Families</Link>
         <Link href={'/members'}>Members</Link>
+        <Link href={'/scrolltest'}>Scroll list</Link>
       </Stack>
     </>
   );

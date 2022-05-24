@@ -7,8 +7,6 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import FamiliesTable from './FamiliesTable';
 import { FixedSizeList as List } from 'react-window';
 import useSWRInfinite from 'swr/infinite';
-import InfiniteLoader from 'react-window-infinite-loader';
-import useOnScreen from 'src/hooks/useOnScreen';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { Box } from '@mui/material';
 
@@ -50,6 +48,9 @@ const FamiliesListVirtualized = () => {
 
   return (
     <>
+      <p>Listas virtualizadas</p>
+      <p>Utiliza o react-window</p>
+      <p>É apenas a virtualização, não possui paginação no scroll</p>
       <Box
         sx={{
           height: '300px',
@@ -77,12 +78,6 @@ const FamiliesListVirtualized = () => {
 };
 
 export default FamiliesListVirtualized;
-
-const Row = ({ index, style, data }) => {
-  const family = data[index];
-  if (!family) return <div style={style}>Loading</div>;
-  return <div style={style}>{family.name}</div>;
-};
 
 const Acordeao = ({ index, style, data }) => {
   const family = data[index];

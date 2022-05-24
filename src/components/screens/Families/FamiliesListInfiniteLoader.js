@@ -5,10 +5,11 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import FamiliesTable from './FamiliesTable';
+import { FixedSizeList as List } from 'react-window';
 import useSWRInfinite from 'swr/infinite';
-import InfiniteScroll from 'react-infinite-scroll-component';
-
-const PAGE_SIZE = 10;
+import InfiniteLoader from 'react-window-infinite-loader';
+import AutoSizer from 'react-virtualized-auto-sizer';
+import { Box } from '@mui/material';
 
 const getKey = (pageIndex, previousPageData) => {
   if (
@@ -19,11 +20,13 @@ const getKey = (pageIndex, previousPageData) => {
   // if (previousPageData && !previousPageData.length) return null; // reached the end
   return {
     url: `/families/with/members`,
-    params: { page: pageIndex, pageSize: PAGE_SIZE },
+    params: { page: pageIndex, pageSize: 6 },
   }; // SWR key
 };
 
-const FamiliesList = () => {
+const PAGE_SIZE = 6;
+
+const FamiliesListInfiniteLoader = () => {
   const [dataFamily, setDataFamily] = React.useState([]);
 
   const {
@@ -34,7 +37,6 @@ const FamiliesList = () => {
     isValidating,
     mutate,
   } = useSWRInfinite(getKey);
-  console.log('families :', families);
 
   React.useEffect(() => {
     console.log('useEffect');
@@ -47,8 +49,11 @@ const FamiliesList = () => {
     }
   }, [families]);
 
-  if (!families || !dataFamily.length) return;
+  if (!families) return;
 
+  if (dataFamily.length < 1) return;
+
+  const issues = families ? [].concat(...families) : [];
   const isLoadingInitialData = !families && !error;
   const isLoadingMore =
     isLoadingInitialData ||
@@ -62,30 +67,40 @@ const FamiliesList = () => {
 
   const loadMore = () => {
     if (isLoadingMore || isReachingEnd)
-      return console.log('loading more or reached the end');
+      return console.log('carregando ou chegou ao fim');
 
     setSize(size + 1);
   };
 
   return (
     <>
-      <InfiniteScroll
-        dataLength={dataFamily.length}
-        next={loadMore}
-        hasMore={!isReachingEnd}
-        loader={<h4>Loading...</h4>}
-        height={400}
+      <InfiniteLoader
+        isItemLoaded={() => !dataFamily.length}
+        itemCount={dataFamily.length}
+        loadMoreItems={() => loadMore()}
       >
-        {dataFamily.map((family, index) => (
-          <Acordeao family={family} key={family.id} />
-        ))}
-      </InfiniteScroll>
+        {({ onItemsRendered, ref }) => (
+          <List
+            height={200}
+            width={200}
+            itemCount={dataFamily.length}
+            itemSize={35}
+            itemData={dataFamily}
+            // innerElementType={Acordeao}
+            onItemsRendered={onItemsRendered}
+            ref={ref}
+          >
+            {Row}
+          </List>
+        )}
+      </InfiniteLoader>
+
       <button onClick={() => loadMore()}>Load more</button>
     </>
   );
 };
 
-export default FamiliesList;
+export default FamiliesListInfiniteLoader;
 
 const Acordeao = ({ family }) => {
   return (
@@ -102,4 +117,35 @@ const Acordeao = ({ family }) => {
       </AccordionDetails>
     </Accordion>
   );
+};
+
+const SimpleCard = ({ index, data }) => {
+  console.log('index :', index);
+  console.log('data :', data);
+  const loading = data[index] === null;
+  if (loading) return <h4>Loading</h4>;
+  const family = data[index];
+  return <h4>{family?.name || ''}</h4>;
+};
+
+const Example = () => (
+  <AutoSizer>
+    {({ height, width }) => (
+      <List
+        className="List"
+        height={height}
+        itemCount={1000}
+        itemSize={35}
+        width={width}
+      >
+        {Row}
+      </List>
+    )}
+  </AutoSizer>
+);
+
+const Row = ({ index, style, data }) => {
+  const family = data[index];
+  if (!family) return <div style={style}>Loading</div>;
+  return <div style={style}>{family.name}</div>;
 };

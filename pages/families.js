@@ -3,12 +3,10 @@ import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import FamiliesList from '@/components/screens/Families/FamiliesList';
-import { listAllFamiliesWithMembers } from '@/services/Families';
 import { FamiliesProvider } from '@/contexts/families/provider';
 import FamiliesDialog from '@/components/screens/Families/FamiliesDialog';
-import NoSsr from '@mui/base/NoSsr';
 
-const Families = ({ families, members }) => {
+const Families = () => {
   return (
     <FamiliesProvider>
       <Container maxWidth="md">
@@ -17,14 +15,7 @@ const Families = ({ families, members }) => {
             Families
           </Typography>
           <FamiliesDialog />
-          {/* <Box
-            sx={{
-              height: '200px',
-              // overflow: 'auto'
-            }}
-          > */}
           <FamiliesList />
-          {/* </Box> */}
         </Box>
       </Container>
     </FamiliesProvider>
