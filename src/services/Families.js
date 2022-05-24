@@ -1,8 +1,13 @@
 import api from './api';
 
-export const listAllFamilies = async () => {
+export const listAllFamilies = async ({ page, pageSize, search }) => {
+  const pageableDTO = {
+    page,
+    pageSize,
+    search,
+  };
   try {
-    const res = await api.get('/families');
+    const res = await api.get('/families', { params: { ...pageableDTO } });
     return res;
   } catch (err) {
     throw new Error(err.response.data.message);
