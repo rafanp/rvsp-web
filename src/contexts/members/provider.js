@@ -22,6 +22,7 @@ const defaultMember = {
   name: '',
   child: false,
   attending: false,
+  family_id: null,
 };
 
 export function MembersProvider({ children }) {

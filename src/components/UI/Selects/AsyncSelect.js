@@ -1,19 +1,21 @@
 import { AsyncPaginate } from 'react-select-async-paginate';
 import loadFamilies from './loadFamilies';
 
-import loadOptions from './loadOptions';
-
 const defaultAdditional = {
   page: 1,
 };
 
-const AsyncSelect = ({ options, onChange, defaultValue }) => {
+const AsyncSelect = ({ options, onChange, defaultValue, method }) => {
   const selectStyles = {
     menuPortal: (provided) => ({ ...provided, zIndex: 9999 }),
   };
 
-  const loadPageOptions = async (q, prevOptions, { page }) => {
-    const { options, hasMore } = await loadFamilies({ page });
+  const loadPageOptions = async (keyword, prevOptions, { page, search }) => {
+    const { options, hasMore } = await method({
+      page,
+      // todo - Search not implemented in the method
+      //search: keyword
+    });
 
     return {
       options,
@@ -26,7 +28,6 @@ const AsyncSelect = ({ options, onChange, defaultValue }) => {
   };
 
   return (
-    // <button onClick={() => loadFamilies({})}></button>
     <AsyncPaginate
       additional={defaultAdditional}
       value={defaultValue}

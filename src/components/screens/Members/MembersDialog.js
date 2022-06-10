@@ -14,8 +14,39 @@ import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
 import { useMembers } from '@/contexts/members/provider';
+import useSWRInfinite from 'swr/infinite';
+import ReactSelect from '@/components/UI/Selects/ReactSelect';
+import AsyncSelect from '@/components/UI/Selects/AsyncSelect';
+import loadFamilies from '@/components/UI/Selects/loadFamilies';
+
+const getKey = (pageIndex, previousPageData) => {
+  if (
+    previousPageData &&
+    previousPageData.currentPage > previousPageData.lastPage
+  )
+    return null;
+  // if (previousPageData && !previousPageData.length) return null; // reached the end
+  return {
+    url: `/families/with/members`,
+    params: { page: pageIndex, pageSize: PAGE_SIZE },
+  }; // SWR key
+};
+
+const options = [
+  { value: 'chocolate', label: 'Chocolate' },
+  { value: 'strawberry', label: 'Strawberry' },
+  { value: 'vanilla', label: 'Vanilla' },
+];
 
 export default function MembersDialog() {
+  const {
+    data: families,
+    error,
+    size,
+    setSize,
+    isValidating,
+    mutate,
+  } = useSWRInfinite(getKey);
   const {
     openMemberDialog,
     setOpenMemberDialog,
@@ -69,14 +100,19 @@ export default function MembersDialog() {
             fullWidth
             variant="standard"
           />
-          <FormControl fullWidth margin="dense" variant="standard">
+          {/*           <FormControl fullWidth margin="dense" variant="standard">
             <InputLabel id="family">Family</InputLabel>
-            <Select labelId="family" id="family" label="Family">
-              <MenuItem value={10}>Ten</MenuItem>
-              <MenuItem value={20}>Twenty</MenuItem>
-              <MenuItem value={30}>Thirty</MenuItem>
-            </Select>
-          </FormControl>
+
+            <AsyncSelect method={loadFamilies} />
+
+            <ReactSelect
+              name="family_id"
+              options={options}
+              defaultValue={memberData.family_id}
+              onChange={(e) => changeMember('family_id', e.value)}
+            />
+          </FormControl> */}
+
           <FormControlLabel
             control={
               <Checkbox
